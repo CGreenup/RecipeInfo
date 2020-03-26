@@ -20,9 +20,6 @@
         <activity android:name=".RecipeInfoActivity"
             android:label="Recipe Information Finder">
         </activity>
-        <activity android:name=".AboutAppActivity"
-            android:label="Application Information">
-        </activity>
     </application>
 
 </manifest>
