@@ -72,19 +72,18 @@ implements View.OnClickListener {
             FileInputStream fis = openFileInput("userInput.txt");
             Scanner scanner = new Scanner(fis);
 
-
-            //TODO USE stringbuilder for total and find a better variable name for it
             String val;
-            String total = "";
+            StringBuilder stringBuilder = new StringBuilder();
 
             while(scanner.hasNext()){
                 val = scanner.nextLine();
                 Log.i("TESTTT", val);
-                total += val;
+                stringBuilder.append(val);
+                stringBuilder.append("\n");
             }
 
             TextView tv = findViewById(R.id.result_tv);
-            tv.setText(total);
+            tv.setText(stringBuilder);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
