@@ -24,7 +24,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/recipe_ev"
+        android:id="@+id/recipe_et"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ems="10"
