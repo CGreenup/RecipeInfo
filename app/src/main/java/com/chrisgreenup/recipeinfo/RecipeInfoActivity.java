@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,8 +29,9 @@ implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.submit_btn){
-            //setupResults();
-            handle();
+            writeData();
+            setupResults();
+            readData();
         }
         else {
             setupActivityRecipe();
@@ -46,17 +48,10 @@ implements View.OnClickListener {
         findViewById(R.id.result_return_btn).setOnClickListener(this);
     }
 
-    //When the user clicks the [SUBMIT] button after entering a recipe, this function is called
-    //Handles the backend, and TODO needs to be done in background thread probably
-    public void handle(){
-        EditText et = findViewById(R.id.recipe_et);
-        writeData(et);
-        readData();
-
-    }
-
-    private void writeData(EditText editText){
+    private void writeData(){
         try {
+            EditText editText = findViewById(R.id.recipe_et);
+
             FileOutputStream fos = openFileOutput("userInput.txt", Context.MODE_PRIVATE);
             OutputStreamWriter osw = new OutputStreamWriter(fos);
             BufferedWriter bw = new BufferedWriter(osw);
@@ -77,9 +72,19 @@ implements View.OnClickListener {
             FileInputStream fis = openFileInput("userInput.txt");
             Scanner scanner = new Scanner(fis);
 
+
+            //TODO USE stringbuilder for total and find a better variable name for it
+            String val;
+            String total = "";
+
             while(scanner.hasNext()){
-                Log.i("TESTTT", scanner.next());
+                val = scanner.nextLine();
+                Log.i("TESTTT", val);
+                total += val;
             }
+
+            TextView tv = findViewById(R.id.result_tv);
+            tv.setText(total);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
