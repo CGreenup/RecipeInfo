@@ -2,6 +2,7 @@ package com.chrisgreenup.recipeinfo;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 public class RecipeInfoActivity extends AppCompatActivity
 implements View.OnClickListener {
@@ -44,9 +46,12 @@ implements View.OnClickListener {
         findViewById(R.id.result_return_btn).setOnClickListener(this);
     }
 
+    //When the user clicks the [SUBMIT] button after entering a recipe, this function is called
+    //Handles the backend, and TODO needs to be done in background thread probably
     public void handle(){
         EditText et = findViewById(R.id.recipe_et);
         writeData(et);
+        readData();
 
     }
 
@@ -70,6 +75,12 @@ implements View.OnClickListener {
     private void readData(){
         try {
             FileInputStream fis = openFileInput("userInput.txt");
+            Scanner scanner = new Scanner(fis);
+
+            while(scanner.hasNext()){
+                Log.i("TESTTT", scanner.next());
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
