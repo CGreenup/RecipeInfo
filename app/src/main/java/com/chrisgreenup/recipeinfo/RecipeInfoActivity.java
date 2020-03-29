@@ -94,11 +94,21 @@ implements View.OnClickListener {
         }
     }
 
+    public FileInputStream openFile(String filename){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return fis;
+    }
+
     private FdcDownload dataDownload;
 
     private void doDownload(){
         if(dataDownload == null){
-            dataDownload = new FdcDownload(getResources().getString(R.string.api_key));
+            dataDownload = new FdcDownload(getResources().getString(R.string.api_key), openFile("userInput.txt"));
             dataDownload.execute();
         }
     }
