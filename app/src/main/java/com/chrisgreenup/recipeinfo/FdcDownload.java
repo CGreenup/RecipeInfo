@@ -1,5 +1,6 @@
 package com.chrisgreenup.recipeinfo;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -28,8 +29,6 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
         apiKey = key;
     }
 
-    RecipeInfoActivity maker;
-
     @Override
     protected String doInBackground(Void... voids) {
         StringBuilder result = new StringBuilder();
@@ -39,9 +38,9 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
 
         //TODO HERE: Changes fdcInitialSearch to include inputs from user in the EditText
 
-
         try{
-            URL url = new URL(makeSearchURL("apple test"));
+
+            URL url = new URL(makeSearchURL("apple"));
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
             InputStream is = connection.getInputStream();
@@ -61,7 +60,7 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
 
             String id = food.getString("fdcId");
 
-            Log.i("TESTTT", id);
+            Log.i("TESTTT", makeFoodIdURL(id));
 
             connection.disconnect();
 
@@ -78,13 +77,17 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
     }
 
     private String makeSearchURL(String searchTerms){
-        String result = "https://api.nal.usda.gov/fdc/v1/search?api_key=" +
-                apiKey + "&generalSearchInput=" + searchTerms;
-        return result;
+        Uri.Builder builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/search").buildUpon();
+        builder.appendQueryParameter("api_key", apiKey);
+        builder.appendQueryParameter("generalSearchInput", searchTerms);
+
+        return builder.toString();
     }
 
     private String makeFoodIdURL(String foodId){
-        return "https://api.nal.usda.gov/fdc/v1/" + foodId + "?api_key=" +
-                apiKey;
+        Uri.Builder builder = Uri.parse("https://api.nal.usda.gov/fdc/v1/" + foodId).buildUpon();
+        builder.appendQueryParameter("api_key", apiKey);
+
+        return builder.toString();
     }
 }

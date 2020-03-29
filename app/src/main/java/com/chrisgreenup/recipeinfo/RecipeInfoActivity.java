@@ -37,6 +37,8 @@ implements View.OnClickListener {
         }
         else {
             setupActivityRecipe();
+            EditText et = findViewById(R.id.recipe_et);
+            //Set et text to the text in the file
         }
     }
 
@@ -100,10 +102,4 @@ implements View.OnClickListener {
             dataDownload.execute();
         }
     }
-
-   /*
-
-
-
-    */
 }
