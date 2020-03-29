@@ -1,6 +1,7 @@
 package com.chrisgreenup.recipeinfo;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,9 @@ implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActivityRecipe();
+
+        Log.i("TESTTT", "https://api.nal.usda.gov/fdc/v1/search?api_key=" +
+                getResources().getString(R.string.api_key) + "&generalSearchInput=" + "sugar");
     }
 
     @Override
@@ -32,6 +36,7 @@ implements View.OnClickListener {
             writeData();
             setupResults();
             readData();
+            doDownload();
         }
         else {
             setupActivityRecipe();
@@ -90,4 +95,12 @@ implements View.OnClickListener {
         }
     }
 
+    private FdcDownload dataDownload;
+
+    private void doDownload(){
+        if(dataDownload == null){
+            dataDownload = new FdcDownload();
+            dataDownload.execute();
+        }
+    }
 }
