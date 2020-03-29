@@ -22,21 +22,26 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class FdcDownload extends AsyncTask<Void, Void, String> {
 
+    String apiKey;
 
+    FdcDownload(String key){
+        apiKey = key;
+    }
 
-    URLMaker maker = new URLMaker();
+    RecipeInfoActivity maker;
 
     @Override
     protected String doInBackground(Void... voids) {
         StringBuilder result = new StringBuilder();
         String resultString = null;
 
+        Log.i("TESTTT", makeSearchURL("apple test"));
+
         //TODO HERE: Changes fdcInitialSearch to include inputs from user in the EditText
 
-        Log.i("TESTTT", maker.makeSearchURL("sugar"));
 
         try{
-            URL url = new URL(maker.makeSearchURL("sugar"));
+            URL url = new URL(makeSearchURL("apple test"));
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
             InputStream is = connection.getInputStream();
@@ -70,5 +75,16 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
 
         return result.toString();
 
+    }
+
+    private String makeSearchURL(String searchTerms){
+        String result = "https://api.nal.usda.gov/fdc/v1/search?api_key=" +
+                apiKey + "&generalSearchInput=" + searchTerms;
+        return result;
+    }
+
+    private String makeFoodIdURL(String foodId){
+        return "https://api.nal.usda.gov/fdc/v1/" + foodId + "?api_key=" +
+                apiKey;
     }
 }

@@ -20,8 +20,7 @@
         </activity>
 
         <activity android:name=".RecipeInfoActivity"
-            android:label="Recipe Information Finder">
-        </activity>
+            android:label="Recipe Information Finder"/>
 
     </application>
 

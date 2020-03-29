@@ -25,9 +25,6 @@ implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActivityRecipe();
-
-        Log.i("TESTTT", "https://api.nal.usda.gov/fdc/v1/search?api_key=" +
-                getResources().getString(R.string.api_key) + "&generalSearchInput=" + "sugar");
     }
 
     @Override
@@ -99,8 +96,14 @@ implements View.OnClickListener {
 
     private void doDownload(){
         if(dataDownload == null){
-            dataDownload = new FdcDownload();
+            dataDownload = new FdcDownload(getResources().getString(R.string.api_key));
             dataDownload.execute();
         }
     }
+
+   /*
+
+
+
+    */
 }
