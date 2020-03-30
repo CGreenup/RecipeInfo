@@ -1,3 +1,6 @@
+/*
+    Chris Greenup
+ */
 package com.chrisgreenup.recipeinfo;
 
 import android.net.Uri;

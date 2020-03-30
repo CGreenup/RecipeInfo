@@ -1,9 +1,10 @@
+/*
+    Chris Greenup
+ */
 package com.chrisgreenup.recipeinfo;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class RecipeInfoActivity extends AppCompatActivity
 implements View.OnClickListener {

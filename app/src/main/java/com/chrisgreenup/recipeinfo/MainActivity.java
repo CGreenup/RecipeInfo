@@ -1,5 +1,9 @@
 package com.chrisgreenup.recipeinfo;
 
+/*
+    Chris Greenup
+ */
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
