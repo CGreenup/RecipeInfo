@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class RecipeInfoActivity extends AppCompatActivity
@@ -30,10 +31,13 @@ implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.submit_btn){
+            ArrayList<Integer> recipeInformation = new ArrayList<>(5);
+
             writeData();
             setupResults();
             readData();
             doDownload();
+            dataDownload = null;
         }
         else {
             setupActivityRecipe();
@@ -81,7 +85,7 @@ implements View.OnClickListener {
 
             while(scanner.hasNext()){
                 val = scanner.nextLine();
-                Log.i("TESTTT", val);
+                //Log.i("TESTTT", val);
                 stringBuilder.append(val);
                 stringBuilder.append("\n");
             }
@@ -106,10 +110,14 @@ implements View.OnClickListener {
 
     private FdcDownload dataDownload;
 
-    private void doDownload(){
+    private ArrayList doDownload(){
         if(dataDownload == null){
-            dataDownload = new FdcDownload(getResources().getString(R.string.api_key), openFile("userInput.txt"));
-            dataDownload.execute();
+            dataDownload = new FdcDownload(
+                    getResources().getString(R.string.api_key),
+                    openFile("userInput.txt")
+            );
         }
+        dataDownload.execute();
+        return dataDownload.getInformation();
     }
 }

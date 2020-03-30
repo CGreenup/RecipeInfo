@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -27,6 +28,24 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
     private FileInputStream fis;
     private String apiKey;
 
+    private int totalCalories = 0;
+    private int totalCarbs = 0;
+    private int totalSugars = 0;
+    private int totalProtein = 0;
+    private int totalFat = 0;
+
+    public ArrayList<Integer> getInformation(){
+        ArrayList<Integer> arrayList = new ArrayList<>(5);
+
+        arrayList.add(totalCalories);
+        arrayList.add(totalCarbs);
+        arrayList.add(totalSugars);
+        arrayList.add(totalProtein);
+        arrayList.add(totalFat);
+
+        return arrayList;
+    }
+
     FdcDownload(String key, FileInputStream fileInputStream){
         apiKey = key;
         fis = fileInputStream;
@@ -37,8 +56,6 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
         StringBuilder result = new StringBuilder();
         String resultString = null;
 
-        //TODO HERE: Changes fdcInitialSearch to include inputs from user in the EditText
-
         //findInformationOf("apple");
         readUserInput();
 
@@ -47,22 +64,23 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
     }
 
     private String readUserInput(){
-        String val = "";
+        String nextIngredient = "";
         Scanner scanner = new Scanner(fis);
 
         StringBuilder stringBuilder = new StringBuilder();
 
         while (scanner.hasNext()) {
-            val = scanner.nextLine();
-            Log.i("TESTTT", val);
-            findInformationOf(val);
-            //stringBuilder.append(val);
+            nextIngredient = scanner.nextLine();
+            Log.i("TESTTT", nextIngredient);
+            findInformationOf(nextIngredient);
+            //stringBuilder.append(findInformationOf(nextIngredient));
             //stringBuilder.append("\n");
         }
 
-        return val;
+        return nextIngredient;
     }
 
+    //Find the nutritional information of the given parameter
     private void findInformationOf(String searchTerms) {
         try{
 
@@ -93,8 +111,39 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
             //Put the id of this object into a string in order to find its nutritional data
             String id = food.getString("fdcId");
 
+
+
+
+
             //Go to this food's specific information url
-            makeFoodIdURL(id);
+            url = new URL(makeFoodIdURL(id));
+            connection = (HttpsURLConnection) url.openConnection();
+
+            is = connection.getInputStream();
+            isr = new InputStreamReader(is);
+            br = new BufferedReader(isr);
+
+            jsonData = new StringBuilder();
+
+            while ((line = br.readLine()) != null)
+                jsonData.append(line);
+
+            reader = new JSONObject(jsonData.toString());
+            JSONObject labelNutrients = reader.getJSONObject("labelNutrients");
+
+            totalCalories += getNutritionalData(labelNutrients, "calories");
+            totalCarbs += getNutritionalData(labelNutrients, "carbohydrates");
+            totalFat += getNutritionalData(labelNutrients, "fat");
+            totalProtein += getNutritionalData(labelNutrients, "protein");
+            totalSugars += getNutritionalData(labelNutrients, "sugars");
+
+            Log.i("NUTRINFO", "Calories " + totalCalories);
+            Log.i("NUTRINFO", "Carbs " + totalCarbs);
+            Log.i("NUTRINFO", "Fat " + totalFat);
+            Log.i("NUTRINFO", "Protein " + totalProtein);
+            Log.i("NUTRINFO", "Sugars " + totalSugars);
+
+            //Grab all of the desired nutrient information
 
             connection.disconnect();
 
@@ -105,6 +154,10 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private int getNutritionalData(JSONObject labelNutrients, String searchTerm) throws JSONException {
+        return labelNutrients.getJSONObject(searchTerm).getInt("value");
     }
 
     private String makeSearchURL(String searchTerms){
