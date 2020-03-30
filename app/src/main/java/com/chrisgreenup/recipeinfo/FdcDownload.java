@@ -3,6 +3,7 @@ package com.chrisgreenup.recipeinfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,20 +11,18 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
 
 
-public class FdcDownload extends AsyncTask<Void, Void, String> {
+public class FdcDownload extends AsyncTask<Void, Void, Void> {
 
     private FileInputStream fis;
     private String apiKey;
@@ -34,30 +33,18 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
     private int totalProtein = 0;
     private int totalFat = 0;
 
-    public ArrayList<Integer> getInformation(){
-        ArrayList<Integer> arrayList = new ArrayList<>(5);
+    TextView tv;
 
-        arrayList.add(totalCalories);
-        arrayList.add(totalCarbs);
-        arrayList.add(totalSugars);
-        arrayList.add(totalProtein);
-        arrayList.add(totalFat);
-
-        return arrayList;
-    }
-
-    FdcDownload(String key, FileInputStream fileInputStream){
+    FdcDownload(String key, FileInputStream fileInputStream, TextView textView){
         apiKey = key;
         fis = fileInputStream;
+        tv = textView;
     }
 
     @Override
-    protected String doInBackground(Void... voids) {
-        StringBuilder result = new StringBuilder();
-
+    protected Void doInBackground(Void... voids) {
         readUserInput();
-
-        return result.toString();
+        return null;
     }
 
     private String readUserInput(){
@@ -174,5 +161,24 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
         Log.i("TESTTT", "food id url: " + builder.toString());
 
         return builder.toString();
+    }
+
+    private void updateTextView(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Nutritional Information of Recipe:\n\n");
+
+        builder.append("Total calories: " + totalCalories + " kCal\n");
+        builder.append("Total carbs: " + totalCarbs + "g\n");
+        builder.append("Total sugars: " + totalSugars + "g\n");
+        builder.append("Total protein: " + totalProtein + "g\n");
+        builder.append("Total fat: " + totalFat + "g");
+
+        tv.setText(builder.toString());
+    }
+
+
+    @Override
+    protected void onPostExecute(Void s) {
+        updateTextView();
     }
 }
