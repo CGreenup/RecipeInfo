@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimaryDark"
                 android:fontFamily="sans-serif-medium"
-                android:text="Please wait as we find the ingredient information.\n\nWe apologize for the inconvenience"
+                android:text="@string/loading_text"
                 android:textColor="@color/textPrimary"
                 android:textSize="30sp"
                 android:typeface="sans" />

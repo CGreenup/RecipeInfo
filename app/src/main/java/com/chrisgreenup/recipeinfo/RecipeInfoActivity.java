@@ -22,6 +22,17 @@ import java.util.Scanner;
 public class RecipeInfoActivity extends AppCompatActivity
 implements View.OnClickListener {
 
+    /*
+    Calories
+    Carbs
+    Sugars
+    Protein
+    Fat
+     */
+
+    int calories, carbs, sugars, protein, fat = 0;
+    ArrayList<Integer> allNutritionalInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,11 +44,19 @@ implements View.OnClickListener {
         if (view.getId() == R.id.submit_btn){
             ArrayList<Integer> recipeInformation = new ArrayList<>(5);
 
+            //Write everything in the edit text to a file
             writeData();
+
+            //Set up the results activity
             setupResults();
-            readData();
-            doDownload();
+
+            //Download nutritional information from the database
+            allNutritionalInfo = doDownload();
             dataDownload = null;
+            initializeVariables();
+
+            //Update the result TextView to show the nutritional info
+            updateTextView();
         }
         else {
             setupActivityRecipe();
@@ -51,9 +70,23 @@ implements View.OnClickListener {
         findViewById(R.id.submit_btn).setOnClickListener(this);
     }
 
+    void updateTextView(){
+        StringBuilder builder = new StringBuilder();
+        builder.append("Nutritional Information of Recipe:\n\n");
+
+        builder.append("Total calories: " + calories + " kCal\n");
+        builder.append("Total carbs: " + carbs + "g\n");
+        builder.append("Total sugars: " + sugars + "g\n");
+        builder.append("Total protein: " + protein + "g\n");
+        builder.append("Total fat: " + fat + "g");
+
+        ((TextView) findViewById(R.id.result_tv)).setText(builder.toString());
+    }
+
     void setupResults(){
         setContentView(R.layout.results);
         findViewById(R.id.result_return_btn).setOnClickListener(this);
+        ((TextView) findViewById(R.id.result_tv)).setText(getResources().getText(R.string.loading_text));
     }
 
     private void writeData(){
@@ -84,8 +117,9 @@ implements View.OnClickListener {
             StringBuilder stringBuilder = new StringBuilder();
 
             while(scanner.hasNext()){
-                val = scanner.nextLine();
-                //Log.i("TESTTT", val);
+                val = scanner.next();
+                val += scanner.nextLine();
+                Log.i("TESTTT", val);
                 stringBuilder.append(val);
                 stringBuilder.append("\n");
             }
@@ -119,5 +153,13 @@ implements View.OnClickListener {
         }
         dataDownload.execute();
         return dataDownload.getInformation();
+    }
+
+    private void initializeVariables(){
+        calories = allNutritionalInfo.get(0);
+        carbs = allNutritionalInfo.get(1);
+        sugars = allNutritionalInfo.get(2);
+        protein = allNutritionalInfo.get(3);
+        fat = allNutritionalInfo.get(4);
     }
 }

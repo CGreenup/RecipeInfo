@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RecipeInfo</string>
+    <string name="loading_text">Please wait as we find the ingredient information.\n\nWe apologize for the inconvenience</string>
 </resources>

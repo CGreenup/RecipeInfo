@@ -54,13 +54,10 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
         StringBuilder result = new StringBuilder();
-        String resultString = null;
 
-        //findInformationOf("apple");
         readUserInput();
 
         return result.toString();
-
     }
 
     private String readUserInput(){
