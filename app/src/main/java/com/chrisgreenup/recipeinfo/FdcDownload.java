@@ -137,11 +137,11 @@ public class FdcDownload extends AsyncTask<Void, Void, String> {
             totalProtein += getNutritionalData(labelNutrients, "protein");
             totalSugars += getNutritionalData(labelNutrients, "sugars");
 
-            Log.i("NUTRINFO", "Calories " + totalCalories);
-            Log.i("NUTRINFO", "Carbs " + totalCarbs);
-            Log.i("NUTRINFO", "Fat " + totalFat);
-            Log.i("NUTRINFO", "Protein " + totalProtein);
-            Log.i("NUTRINFO", "Sugars " + totalSugars);
+            Log.i("TESTTTNUTRINFO", "Calories " + totalCalories);
+            Log.i("TESTTTNUTRINFO", "Carbs " + totalCarbs);
+            Log.i("TESTTTNUTRINFO", "Fat " + totalFat);
+            Log.i("TESTTTNUTRINFO", "Protein " + totalProtein);
+            Log.i("TESTTTNUTRINFO", "Sugar " + totalSugars);
 
             //Grab all of the desired nutrient information
 
